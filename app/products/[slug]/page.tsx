@@ -1,3 +1,4 @@
+// app/products/[slug]/page.tsx
 import ProductClient from "./ProductClient";
 
 interface Product {
@@ -8,19 +9,19 @@ interface Product {
   badge?: string;
 }
 
-interface PageProps {
+// Next.js provides `params` automatically
+export default async function ProductPage({
+  params,
+}: {
   params: { slug: string };
-}
-
-// Server Component
-export default async function ProductPage({ params }: PageProps) {
+}) {
   const { slug } = params;
 
-  // Replace with real fetch from database/API
+  // Replace with real fetch from DB/API
   const product: Product = {
     name: "Sample Product",
     slug,
-    image: "/sample.jpg", // Use your actual image path
+    image: "/sample.jpg",
     price: 49.99,
     badge: "Sale",
   };
