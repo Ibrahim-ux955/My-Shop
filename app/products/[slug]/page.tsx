@@ -5,11 +5,11 @@ import { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { products } from "@/data/products";
 
-interface Props {
+interface PageProps {
   params: { slug: string };
 }
 
-export default function ProductPage({ params }: Props) {
+export default function ProductPage({ params }: PageProps) {
   const product = products.find((p) => p.slug === params.slug);
   const [selectedImage, setSelectedImage] = useState(0);
   const { addToCart } = useCart();
@@ -55,7 +55,9 @@ export default function ProductPage({ params }: Props) {
             </span>
           )}
 
-          <p className="text-2xl text-green-600 font-bold my-4">${product.price.toFixed(2)}</p>
+          <p className="text-2xl text-green-600 font-bold my-4">
+            ${product.price.toFixed(2)}
+          </p>
 
           <div className="flex gap-4 mb-6">
             <button
