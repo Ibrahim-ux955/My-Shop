@@ -1,5 +1,4 @@
-// app/products/[slug]/page.tsx
-import ProductClient from './ProductClient';
+import ProductClient from "./ProductClient";
 
 interface Product {
   name: string;
@@ -13,15 +12,15 @@ interface PageProps {
   params: { slug: string };
 }
 
-// Server component
+// Server Component
 export default async function ProductPage({ params }: PageProps) {
   const { slug } = params;
 
-  // Replace this with real API/database call later
+  // Replace with real fetch from database/API
   const product: Product = {
     name: "Sample Product",
     slug,
-    image: "/sample.jpg", // Replace with your real image path
+    image: "/sample.jpg", // Use your actual image path
     price: 49.99,
     badge: "Sale",
   };
