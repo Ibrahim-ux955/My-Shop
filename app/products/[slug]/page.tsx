@@ -1,27 +1,30 @@
-"use client";
-
 import Image from "next/image";
 import { useState } from "react";
+import { notFound } from "next/navigation"; // <-- use Next.js helper
 import { useCart } from "@/context/CartContext";
 import { products } from "@/data/products";
 
-interface PageProps {
-  params: { slug: string };
+// This should be a server component for type safety
+interface Params {
+  slug: string;
 }
 
-export default function ProductPage({ params }: PageProps) {
+interface Props {
+  params: Params;
+}
+
+export default function ProductPage({ params }: Props) {
   const product = products.find((p) => p.slug === params.slug);
   const [selectedImage, setSelectedImage] = useState(0);
   const { addToCart } = useCart();
 
-  if (!product)
-    return <p className="text-center text-red-500 mt-10">Product not found!</p>;
+  if (!product) return notFound(); // Next.js 404 helper
 
-  const images = [product.image]; // Add more images later
+  const images = [product.image];
 
   return (
     <div className="max-w-6xl mx-auto p-6 md:flex gap-10">
-      {/* Left: Images */}
+      {/* Images */}
       <div className="md:w-1/2">
         <div className="w-full h-96 relative rounded-lg overflow-hidden shadow-md mb-4">
           <Image src={images[selectedImage]} alt={product.name} fill className="object-cover" />
@@ -41,7 +44,7 @@ export default function ProductPage({ params }: PageProps) {
         </div>
       </div>
 
-      {/* Right: Product Info */}
+      {/* Product Info */}
       <div className="md:w-1/2 flex flex-col justify-between">
         <div>
           <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
@@ -54,11 +57,9 @@ export default function ProductPage({ params }: PageProps) {
               {product.badge.toUpperCase()}
             </span>
           )}
-
           <p className="text-2xl text-green-600 font-bold my-4">
             ${product.price.toFixed(2)}
           </p>
-
           <div className="flex gap-4 mb-6">
             <button
               onClick={() => addToCart(product)}
@@ -72,7 +73,7 @@ export default function ProductPage({ params }: PageProps) {
           </div>
         </div>
 
-        {/* Overview Section */}
+        {/* Overview */}
         <div className="mt-6 bg-gray-50 p-4 rounded-lg shadow-sm">
           <h2 className="text-xl font-bold mb-2">🧾 Overview</h2>
           <p className="text-gray-700">
