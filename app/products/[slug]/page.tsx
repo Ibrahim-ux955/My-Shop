@@ -1,3 +1,4 @@
+// app/products/[slug]/page.tsx
 import ProductClient from "./ProductClient";
 import { products } from "@/data/products";
 
@@ -9,18 +10,14 @@ interface Product {
   badge?: string;
 }
 
-interface PageProps {
+interface PageParams {
   params: {
     slug: string;
   };
 }
 
-// Server Component
-export default async function ProductPage({ params }: PageProps) {
-  const { slug } = params;
-
-  // Find the product from your products array
-  const product = products.find((p) => p.slug === slug);
+export default function ProductPage({ params }: PageParams) {
+  const product = products.find((p) => p.slug === params.slug);
 
   if (!product) {
     return (
