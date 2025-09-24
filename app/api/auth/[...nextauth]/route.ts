@@ -1,8 +1,9 @@
 import NextAuth from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
+import type { NextRequest } from "next/server";
 
-export const authOptions = {
+const authOptions = {
   providers: [
     GithubProvider({
       clientId: process.env.GITHUB_CLIENT_ID!,
@@ -13,10 +14,10 @@ export const authOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
-  pages: {
-    signIn: "/login", // your custom login page
-  },
 };
 
+// Create a handler
 const handler = NextAuth(authOptions);
+
+// Export GET and POST for Next.js App Router
 export { handler as GET, handler as POST };
