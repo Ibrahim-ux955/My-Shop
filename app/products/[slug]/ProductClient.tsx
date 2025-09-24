@@ -86,7 +86,7 @@ export default function ProductClient({ product }: Props) {
           <h2 className="text-xl font-bold mb-2">🧾 Overview</h2>
           <p className="text-gray-700">
             This is a product detail page from Tokopedia, a large Indonesian e-commerce platform.
-            It showcases a women's fashion item with a clean layout, pricing, and trust elements.
+            It showcases a women&apos;s fashion item with a clean layout, pricing, and trust elements.
           </p>
         </div>
       </div>
