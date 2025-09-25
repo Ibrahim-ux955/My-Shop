@@ -10,12 +10,14 @@ interface Product {
   badge?: string;
 }
 
-// ✅ type the props instead of using `any`
-export default function ProductPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
+// ✅ Explicit PageProps for Next.js App Router
+interface PageProps {
+  params: {
+    slug: string;
+  };
+}
+
+export default function ProductPage({ params }: PageProps) {
   const product: Product | undefined = products.find(
     (p) => p.slug === params.slug
   );
