@@ -23,7 +23,7 @@ export default function CategoryTabs({
             ${
               active === tab
                 ? "bg-black text-white"
-                : "bg-gray-200 hover:bg-gray-300"
+                : "hover:bg-gray-300"
             }`}
         >
           {tab}

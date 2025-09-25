@@ -1,3 +1,4 @@
+import Image from "next/image";
 import CategoryTabs from "@/components/CategoryTabs";
 import ProductCard from "@/components/ProductCard";
 import { products } from "@/data/products";
@@ -6,9 +7,20 @@ export default function ShopPage() {
   return (
     <>
       {/* Hero / Banner */}
-      <section className="relative bg-gray-100 py-16 text-center">
-        <h1 className="text-4xl font-bold mb-2">Shop</h1>
-        <p className="text-gray-600">Home / Shop All Products</p>
+      <section className="relative bg-gray-100 py-16 text-center overflow-hidden">
+        {/* Hero Image */}
+        <div className="absolute inset-0 -z-10">
+          <Image
+            src="/hero-banner.jpg" // replace with your image path
+            alt="Shop Banner"
+            fill
+            className="object-cover w-full h-full"
+          />
+        </div>
+
+        {/* Hero Text */}
+        <h1 className="text-4xl font-bold mb-2 text-white relative z-10">Shop</h1>
+        <p className="text-white relative z-10">Home / Shop All Products</p>
       </section>
 
       {/* Category Tabs */}

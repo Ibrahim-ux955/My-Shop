@@ -31,10 +31,17 @@ export const products = [
     image: "/images/banner.jpg",
   },
   {
-    slug: "sneaker2",
+    slug: "sneakers2",
     name: "Sneaker",
     price: 70,
-    image: "/images/sneaker2.jpg",
+    image: "/images/sneakers2.jpg",
+  },
+   {
+    slug: "shirts",
+    name: "Shirt ",
+    price: 50,
+    image: "/images/shirts.jpg",
   },
   // add more products as needed
+  
 ];

@@ -1,38 +1,40 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useAuth } from "@/context/AuthContext";   // ✅ import the context
 
 export default function LoginPage() {
   const router = useRouter();
+  const { login } = useAuth();                    // ✅ get login from context
   const [form, setForm] = useState({ email: "", password: "" });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    try {
-      // Replace with your API call or Firebase login
-      const res = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
+    const storedUser = localStorage.getItem("user");
+    if (!storedUser) {
+      alert("No account found. Please register first.");
+      return;
+    }
 
-      if (!res.ok) throw new Error("Login failed");
+    const user = JSON.parse(storedUser);
 
-      console.log("Logged in:", form);
+    if (form.email === user.email && form.password === user.password) {
+      // ✅ Update context so other components (e.g. Header) know instantly
+      login(user);
+      // Optionally persist to localStorage for page reloads
+      localStorage.setItem("loggedInUser", JSON.stringify(user));
 
-      // Redirect after successful login
-      router.push("/dashboard");
-    } catch (err) {
-      console.error(err);
-      alert("Login failed. Please try again.");
+      alert("Logged in successfully!");
+      router.push("/"); // redirect to homepage
+    } else {
+      alert("Invalid email or password.");
     }
   };
 
@@ -73,28 +75,9 @@ export default function LoginPage() {
         </button>
       </form>
 
-      {/* OAuth login buttons */}
-      <div className="mt-6 text-center space-y-2">
-        <p className="text-sm mb-2">Or log in with:</p>
-        <button
-          type="button"
-          onClick={() => signIn("github", { callbackUrl: "/dashboard" })}
-          className="w-full bg-gray-800 text-white py-2 rounded hover:bg-gray-900 transition"
-        >
-          Log in with GitHub
-        </button>
-        <button
-          type="button"
-          onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-          className="w-full bg-red-600 text-white py-2 rounded hover:bg-red-700 transition"
-        >
-          Log in with Google
-        </button>
-      </div>
-
       <p className="text-center mt-6 text-sm">
         Don&apos;t have an account?{" "}
-        <Link href="/register" className="text-white font-medium hover:underline">
+        <Link href="/register" className="text-black font-medium hover:underline">
           Create one
         </Link>
       </p>

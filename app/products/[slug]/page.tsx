@@ -10,14 +10,15 @@ interface Product {
   badge?: string;
 }
 
-interface PageParams {
-  params: {
-    slug: string;
-  };
-}
-
-export default function ProductPage({ params }: PageParams) {
-  const product = products.find((p) => p.slug === params.slug);
+// ✅ type the props instead of using `any`
+export default function ProductPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const product: Product | undefined = products.find(
+    (p) => p.slug === params.slug
+  );
 
   if (!product) {
     return (

@@ -18,7 +18,7 @@ interface Props {
 }
 
 export default function ProductClient({ product }: Props) {
-  const [selectedImage, setSelectedImage] = useState(0);
+  const [selectedImage, setSelectedImage] = useState<number>(0);
   const { addToCart } = useCart();
   const images = [product.image];
 
@@ -44,7 +44,7 @@ export default function ProductClient({ product }: Props) {
               }`}
               onClick={() => setSelectedImage(idx)}
             >
-              <Image src={img} alt="" fill className="object-cover" />
+              <Image src={img} alt={product.name} fill className="object-cover" />
             </div>
           ))}
         </div>
@@ -88,7 +88,8 @@ export default function ProductClient({ product }: Props) {
           <h2 className="text-xl font-bold mb-2">🧾 Overview</h2>
           <p className="text-gray-700">
             This is a product detail page from Tokopedia, a large Indonesian
-            e-commerce platform. It showcases a women&apos;s fashion item with a clean layout, pricing, and trust elements.
+            e-commerce platform. It showcases a women&apos;s fashion item with a
+            clean layout, pricing, and trust elements.
           </p>
         </div>
       </div>

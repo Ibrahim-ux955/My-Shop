@@ -1,40 +1,40 @@
-/* eslint-disable react/no-unescaped-entities */
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useAuth } from "@/context/AuthContext";   // ✅ import context
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { login } = useAuth();                    // ✅ get login from context
   const [form, setForm] = useState({ name: "", email: "", password: "" });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    try {
-      // Replace with your API call to register the user
-      const res = await fetch("/api/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
+    const user = {
+      name: form.name,
+      email: form.email,
+      username: form.name.toLowerCase().replace(/\s+/g, ""),
+      password: form.password,
+    };
 
-      if (!res.ok) throw new Error("Registration failed");
+    // ✅ Save user in localStorage
+    localStorage.setItem("user", JSON.stringify(user));
 
-      console.log("New account created:", form);
+    // ✅ Immediately update global auth state so Header etc. re-render
+    login(user);
 
-      // Redirect to login page after success
-      router.push("/login");
-    } catch (err) {
-      console.error(err);
-      alert("Registration failed. Please try again.");
-    }
+    // ✅ Also persist the logged-in session across reloads
+    localStorage.setItem("loggedInUser", JSON.stringify(user));
+
+    alert("Account created successfully!");
+    router.push("/"); // redirect to homepage
   };
 
   return (
@@ -86,28 +86,9 @@ export default function RegisterPage() {
         </button>
       </form>
 
-      {/* OAuth login buttons */}
-      <div className="mt-6 text-center space-y-2">
-        <p className="text-sm mb-2">Or sign in with:</p>
-        <button
-          type="button"
-          onClick={() => signIn("github", { callbackUrl: "/dashboard" })}
-          className="w-full bg-gray-800 text-white py-2 rounded hover:bg-gray-900 transition"
-        >
-          Sign in with GitHub
-        </button>
-        <button
-          type="button"
-          onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-          className="w-full bg-red-600 text-white py-2 rounded hover:bg-red-700 transition"
-        >
-          Sign in with Google
-        </button>
-      </div>
-
       <p className="text-center mt-6 text-sm">
         Already have an account?{" "}
-        <Link href="/login" className="text-white font-medium hover:underline">
+        <Link href="/login" className="text-black font-medium hover:underline">
           Log in
         </Link>
       </p>
