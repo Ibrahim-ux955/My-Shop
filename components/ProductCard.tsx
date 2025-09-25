@@ -6,24 +6,13 @@ interface ProductProps {
   name: string;
   price: number;
   image: string;
-  slug: string; // add slug to know which product to link
-  badge?: "Sale" | "New";
+  slug: string; // slug is used for the product link
 }
 
-export default function ProductCard({ name, price, image, badge, slug }: ProductProps) {
+export default function ProductCard({ name, price, image, slug }: ProductProps) {
   return (
     <Link href={`/products/${slug}`}>
       <div className="group relative bg-white rounded-lg overflow-hidden shadow hover:shadow-lg transition cursor-pointer">
-        {/* Badge */}
-        {badge && (
-          <span
-            className={`absolute left-3 top-3 px-2 py-1 text-xs font-semibold text-white rounded
-              ${badge === "Sale" ? "bg-red-500" : "bg-teal-500"}`}
-          >
-            {badge.toUpperCase()}
-          </span>
-        )}
-
         {/* Product Image */}
         <div className="relative w-full h-64">
           <Image
