@@ -3,6 +3,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { useAuth } from "@/context/AuthContext";
 
+/** Base product type */
 interface Product {
   name: string;
   price: number;
@@ -11,8 +12,13 @@ interface Product {
   badge?: "Sale" | "New";
 }
 
+/** Cart item = product + quantity */
+export interface CartItem extends Product {
+  qty: number;
+}
+
 interface CartContextType {
-  cart: Product[];
+  cart: CartItem[];
   addToCart: (product: Product) => void;
   removeFromCart: (slug: string) => void;
   clearCart: () => void;
@@ -22,12 +28,12 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
-  const [cart, setCart] = useState<Product[]>([]);
+  const [cart, setCart] = useState<CartItem[]>([]);
 
-  // LocalStorage key depends on current logged-in user
+  // key depends on current logged-in user
   const cartKey = user ? `cart_${user.email}` : "cart_guest";
 
-  // Load cart whenever user changes (login/logout)
+  // Load cart when user changes (login/logout)
   useEffect(() => {
     const saved = localStorage.getItem(cartKey);
     setCart(saved ? JSON.parse(saved) : []);
@@ -38,22 +44,32 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem(cartKey, JSON.stringify(cart));
   }, [cart, cartKey]);
 
-  // Add product to cart (duplicates allowed)
+  /** Add product – increment qty if already in cart */
   const addToCart = (product: Product) => {
-    setCart((prev) => [...prev, product]);
+    setCart(prev => {
+      const existing = prev.find(p => p.slug === product.slug);
+      if (existing) {
+        return prev.map(p =>
+          p.slug === product.slug ? { ...p, qty: p.qty + 1 } : p
+        );
+      }
+      return [...prev, { ...product, qty: 1 }];
+    });
   };
 
-  // Remove only the first instance of a product
+  /** Remove one quantity, or remove item if qty is 1 */
   const removeFromCart = (slug: string) => {
-    const index = cart.findIndex((p) => p.slug === slug);
-    if (index !== -1) {
-      const newCart = [...cart];
-      newCart.splice(index, 1);
-      setCart(newCart);
-    }
+    setCart(prev =>
+      prev.flatMap(item =>
+        item.slug === slug
+          ? item.qty > 1
+            ? [{ ...item, qty: item.qty - 1 }]
+            : []
+          : [item]
+      )
+    );
   };
 
-  // Clear entire cart
   const clearCart = () => setCart([]);
 
   return (
