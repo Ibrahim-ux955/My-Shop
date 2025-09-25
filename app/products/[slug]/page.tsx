@@ -10,16 +10,17 @@ interface Product {
   badge?: string;
 }
 
-// ✅ Explicit PageProps for Next.js App Router
-interface PageProps {
-  params: {
-    slug: string;
-  };
-}
+// ✅ Page component must be async so we can await params
+export default async function ProductPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  // In Next 15 params can be a Promise
+  const { slug } = await params;
 
-export default function ProductPage({ params }: PageProps) {
   const product: Product | undefined = products.find(
-    (p) => p.slug === params.slug
+    (p) => p.slug === slug
   );
 
   if (!product) {
