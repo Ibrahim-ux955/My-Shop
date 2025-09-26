@@ -1,11 +1,14 @@
-// data/products.ts
 export const products = [
   {
     slug: "green-shirt",
     name: "Green Shirt",
     price: 295,
+    salePrice: 250,
     image: "/images/shirt.jpg",
     category: "Accessories",
+    dateAdded: "2025-09-01",
+    salesCount: 10,
+    dateBecamePopular: "2025-09-15",
   },
   {
     slug: "product-b",
@@ -13,13 +16,19 @@ export const products = [
     price: 70,
     image: "/images/product-b.jpg",
     category: "Women",
+    dateAdded: "2025-09-10",
+    salesCount: 5,
   },
   {
     slug: "sneakers",
     name: "Sneakers",
     price: 70,
+    salePrice: 55,
     image: "/images/sneakers.jpg",
     category: "Men",
+    dateAdded: "2025-09-05",
+    salesCount: 60,
+    dateBecamePopular: "2025-09-20",
   },
   {
     slug: "cap",
@@ -27,6 +36,8 @@ export const products = [
     price: 70,
     image: "/images/cap.jpg",
     category: "Children",
+    dateAdded: "2025-09-12",
+    salesCount: 3,
   },
   {
     slug: "banner",
@@ -34,7 +45,9 @@ export const products = [
     price: 70,
     image: "/images/banner.jpg",
     category: "Accessories",
-    
+    dateAdded: "2025-09-02",
+    salesCount: 15,
+    dateBecamePopular: "2025-09-10",
   },
   {
     slug: "sneakers2",
@@ -42,14 +55,16 @@ export const products = [
     price: 70,
     image: "/images/sneakers2.jpg",
     category: "Accessories",
+    dateAdded: "2025-09-08",
+    salesCount: 2,
   },
-   {
+  {
     slug: "shirts",
-    name: "Shirt ",
+    name: "Shirt",
     price: 50,
     image: "/images/shirts.jpg",
     category: "Women",
+    dateAdded: "2025-09-11",
+    salesCount: 0,
   },
-  // add more products as needed
-  
 ];

@@ -1,24 +1,49 @@
-// components/ProductCard.tsx
 import Image from "next/image";
 import Link from "next/link";
 
 interface ProductProps {
   name: string;
   price: number;
+  salePrice?: number;
   image: string;
   slug: string;
-  sale?: boolean;
-  isNew?: boolean;
+  dateAdded: string;
+  salesCount: number;
+  dateBecamePopular?: string;
 }
 
 export default function ProductCard({
   name,
   price,
+  salePrice,
   image,
   slug,
-  sale,
-  isNew,
+  dateAdded,
+  salesCount,
+  dateBecamePopular,
 }: ProductProps) {
+  const today = new Date();
+
+  const isNew = () => {
+    const daysDiff = (today.getTime() - new Date(dateAdded).getTime()) / (1000 * 3600 * 24);
+    return daysDiff <= 30;
+  };
+
+  const isSale = () => {
+    return salePrice !== undefined && salePrice < price;
+  };
+
+  const isPopular = () => {
+    if (!dateBecamePopular) return false;
+    const daysDiff = (today.getTime() - new Date(dateBecamePopular).getTime()) / (1000 * 3600 * 24);
+    return daysDiff <= 30;
+  };
+
+  let badge: "New" | "Sale" | "Popular" | undefined;
+  if (isNew()) badge = "New";
+  else if (isSale()) badge = "Sale";
+  else if (isPopular()) badge = "Popular";
+
   return (
     <Link href={`/products/${slug}`} className="group block">
       <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition overflow-hidden">
@@ -33,26 +58,36 @@ export default function ProductCard({
             priority={false}
           />
 
-          {sale && (
-            <span className="absolute top-3 left-3 bg-red-500 text-white text-xs px-2 py-1 rounded">
-              SALE
-            </span>
-          )}
-          {isNew && (
-            <span className="absolute top-3 right-3 bg-teal-500 text-white text-xs px-2 py-1 rounded">
-              NEW
+          {badge && (
+            <span
+              className={`absolute top-3 left-3 text-xs px-2 py-1 rounded font-bold ${
+                badge === "New"
+                  ? "bg-teal-500 text-white"
+                  : badge === "Sale"
+                  ? "bg-red-500 text-white"
+                  : "bg-yellow-400 text-black"
+              }`}
+            >
+              {badge.toUpperCase()}
             </span>
           )}
         </div>
 
         {/* ---------- DETAILS ---------- */}
         <div className="p-4 text-center">
-          <h3 className="font-medium text-gray-800 text-sm sm:text-base truncate">
-            {name}
-          </h3>
+          <h3 className="font-medium text-gray-800 text-sm sm:text-base truncate">{name}</h3>
           <p className="text-gray-700 text-sm sm:text-base mt-1">
-            ${price.toFixed(2)}
+            {isSale() ? (
+              <>
+                <span className="line-through text-gray-400 mr-2">${price.toFixed(2)}</span>
+                <span className="text-red-500">${salePrice!.toFixed(2)}</span>
+              </>
+            ) : (
+              <>${price.toFixed(2)}</>
+            )}
           </p>
+
+          {/* Star Rating */}
           <div className="flex justify-center mt-2 text-red-500">
             {Array.from({ length: 5 }).map((_, i) => (
               <svg
