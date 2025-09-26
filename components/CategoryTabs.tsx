@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
 
-const tabs = ["All", "Women", "Accessories", "Gadgets", "Editorials"];
+// ✅ Updated tabs
+const tabs = ["All", "Women", "Men", "Children", "Accessories"];
 
 export default function CategoryTabs({
   onChange,

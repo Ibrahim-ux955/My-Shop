@@ -1,15 +1,24 @@
-// app/shop/page.tsx
+"use client";
+import { useState } from "react";
 import Image from "next/image";
 import CategoryTabs from "@/components/CategoryTabs";
 import ProductCard from "@/components/ProductCard";
 import { products } from "@/data/products";
 
 export default function ShopPage() {
+  // Track which category is active
+  const [category, setCategory] = useState("All");
+
+  // Filter products: show all if "All" is selected
+  const filteredProducts =
+    category === "All"
+      ? products
+      : products.filter((p) => p.category === category);
+
   return (
     <>
       {/* Hero Banner */}
       <section className="relative text-center overflow-hidden h-64 md:h-96">
-        {/* Background image with dark overlay */}
         <div className="absolute inset-0 -z-10">
           <Image
             src="/images/hero-banner.jpg"
@@ -21,7 +30,6 @@ export default function ShopPage() {
           <div className="absolute inset-0 bg-black/50" />
         </div>
 
-        {/* Hero text */}
         <div className="flex flex-col items-center justify-center h-full text-white px-4">
           <h1 className="text-4xl md:text-6xl font-bold mb-2">Shop</h1>
           <p className="text-sm md:text-base text-white/80">
@@ -32,10 +40,10 @@ export default function ShopPage() {
 
       {/* Category Tabs */}
       <div className="max-w-7xl mx-auto px-4 mt-8">
-        <CategoryTabs />
+        <CategoryTabs onChange={setCategory} />
       </div>
 
-      {/* Product Grid */}
+      {/* Filtered Product Grid */}
       <div className="max-w-7xl mx-auto px-3 sm:px-4 mt-8">
         <div
           className="
@@ -46,7 +54,7 @@ export default function ShopPage() {
             lg:grid-cols-4
           "
         >
-          {products.map((p) => (
+          {filteredProducts.map((p) => (
             <ProductCard key={p.slug} {...p} />
           ))}
         </div>
