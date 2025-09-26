@@ -7,21 +7,26 @@ import { products } from "@/data/products";
 export default function ShopPage() {
   return (
     <>
-      {/* Hero / Banner (keep your existing hero if desired) */}
+      {/* Hero Banner */}
       <section className="relative text-center overflow-hidden h-64 md:h-96">
+        {/* Background image with dark overlay */}
         <div className="absolute inset-0 -z-10">
           <Image
             src="/images/hero-banner.jpg"
             alt="Shop Banner"
             fill
+            priority
             className="object-cover"
           />
           <div className="absolute inset-0 bg-black/50" />
         </div>
 
-        <div className="flex flex-col items-center justify-center h-full text-center text-white px-4">
+        {/* Hero text */}
+        <div className="flex flex-col items-center justify-center h-full text-white px-4">
           <h1 className="text-4xl md:text-6xl font-bold mb-2">Shop</h1>
-          <p className="text-sm md:text-base text-white/80">Home / Shop All Products</p>
+          <p className="text-sm md:text-base text-white/80">
+            Home / Shop All Products
+          </p>
         </div>
       </section>
 
@@ -31,8 +36,16 @@ export default function ShopPage() {
       </div>
 
       {/* Product Grid */}
-      <div className="max-w-7xl mx-auto px-4 mt-10">
-        <div className="grid gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 mt-8">
+        <div
+          className="
+            grid
+            gap-4 sm:gap-6
+            grid-cols-2
+            sm:grid-cols-3
+            lg:grid-cols-4
+          "
+        >
           {products.map((p) => (
             <ProductCard key={p.slug} {...p} />
           ))}
