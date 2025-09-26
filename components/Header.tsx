@@ -1,3 +1,4 @@
+// components/Header.tsx
 "use client";
 
 import Link from "next/link";
@@ -37,7 +38,7 @@ export default function Header() {
     const parsed = JSON.parse(storedUser);
 
     if (passwordInput === parsed.password) {
-      logout(); // removes session only, preserves account
+      logout();
       setShowConfirm(false);
       router.push("/login");
     } else {
@@ -48,10 +49,12 @@ export default function Header() {
   const totalQty = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
 
   return (
-    <header className="border-b relative">
-      {/* Top bar */}
-      <div className="flex items-center justify-between text-xs px-6 py-2 bg-white">
-        <span className="text-red-500 font-medium">FREE SHIPPING AND RETURNS</span>
+    <header className="border-b bg-white relative">
+      {/* Top promo bar */}
+      <div className="flex items-center justify-between bg-[#f9f9f9] text-[11px] tracking-wide uppercase px-6 py-2">
+        <span className="text-red-500 font-medium">
+          FREE SHIPPING AND RETURNS
+        </span>
         <div className="flex gap-4">
           {user ? (
             <span className="font-bold text-black text-sm">{user.name}</span>
@@ -76,10 +79,22 @@ export default function Header() {
 
       {/* Main nav */}
       <div className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
-        <Link href="/" className="text-2xl font-bold tracking-wide">
+        {/* Logo */}
+        <Link href="/" className="text-3xl font-bold tracking-widest">
           COSSO<span className="text-black">.</span>
         </Link>
 
+        {/* Center nav menu */}
+        <nav className="hidden md:flex gap-6 text-sm font-medium text-gray-700">
+          <Link href="/" className="hover:text-black">Home</Link>
+          <Link href="/shop" className="hover:text-black">Shop</Link>
+          <Link href="/pages" className="hover:text-black">Pages</Link>
+          <Link href="/features" className="hover:text-black">Features</Link>
+          <Link href="/elements" className="hover:text-black">Elements</Link>
+          <Link href="/blog" className="hover:text-black">Blog</Link>
+        </nav>
+
+        {/* Icons */}
         <div className="flex items-center gap-5 text-lg relative">
           <button aria-label="Wishlist">❤️</button>
 
@@ -120,9 +135,7 @@ export default function Header() {
         </div>
       </div>
 
-      
-
-      {/* Password Confirmation Modal */}
+      {/* Logout confirmation modal */}
       {showConfirm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-80">

@@ -11,7 +11,7 @@ export default function CategoryTabs({
   const [active, setActive] = useState("All");
 
   return (
-    <div className="flex justify-center gap-4 mt-6">
+    <div className="flex justify-center gap-6 border-b pb-3">
       {tabs.map((tab) => (
         <button
           key={tab}
@@ -19,12 +19,11 @@ export default function CategoryTabs({
             setActive(tab);
             onChange?.(tab);
           }}
-          className={`px-4 py-1 rounded-full text-sm transition
-            ${
-              active === tab
-                ? "bg-black text-white"
-                : "hover:bg-gray-300"
-            }`}
+          className={`text-sm pb-1 transition ${
+            active === tab
+              ? "border-b-2 border-black text-black"
+              : "text-gray-500 hover:text-black"
+          }`}
         >
           {tab}
         </button>

@@ -5,7 +5,6 @@ import "./globals.css";
 import { Providers } from "./providers";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { AuthProvider } from "@/context/AuthContext";   // ✅ import AuthProvider
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,20 +23,19 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {/* ✅ Wrap the entire app so any page can access AuthContext */}
-        <AuthProvider>
-          <Providers>
-            <Header />
-            <main>{children}</main>
-            <Footer />
-          </Providers>
-        </AuthProvider>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#f7f7f7]`}
+      >
+        <Providers>
+          <Header />
+          <main>{children}</main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );
