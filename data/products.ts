@@ -9,6 +9,11 @@ export const products = [
     dateAdded: "2025-09-01",
     salesCount: 10,
     dateBecamePopular: "2025-09-15",
+    images: [
+     "/images/shirt.jpg",
+     "/images/sneakers-front.jpg",
+     "/images/sneakers-front.jpg",
+   ],
   },
   {
     slug: "product-b",

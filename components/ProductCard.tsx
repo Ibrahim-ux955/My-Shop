@@ -34,10 +34,17 @@ export default function ProductCard({
   };
 
   const isPopular = () => {
-    if (!dateBecamePopular) return false;
-    const daysDiff = (today.getTime() - new Date(dateBecamePopular).getTime()) / (1000 * 3600 * 24);
-    return daysDiff <= 30;
-  };
+  // If a date is already set, respect the 30-day window
+  if (dateBecamePopular) {
+    const daysDiff =
+      (today.getTime() - new Date(dateBecamePopular).getTime()) /
+      (1000 * 3600 * 24);
+    if (daysDiff <= 30) return true;
+  }
+
+  // Otherwise, become popular automatically when salesCount is high
+  return salesCount >= 50;
+};
 
   let badge: "New" | "Sale" | "Popular" | undefined;
   if (isNew()) badge = "New";
