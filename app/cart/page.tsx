@@ -18,9 +18,9 @@ export default function CartPage() {
       <h1 className="text-3xl font-bold mb-6">Your Cart</h1>
 
       <ul className="space-y-6">
-        {cart.map((item, index) => (
+        {cart.map(item => (
           <li
-            key={item.id ?? `${item.slug}-${index}`} // unique key for React
+            key={item.slug}
             className="flex items-center justify-between border-b pb-4"
           >
             <div className="flex items-center gap-4">
@@ -45,7 +45,7 @@ export default function CartPage() {
             </div>
 
             <button
-              onClick={() => removeFromCart(item.id ?? item.slug)}
+              onClick={() => removeFromCart(item.slug)}
               className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
             >
               Remove
