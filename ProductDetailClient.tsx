@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useCart } from "@/context/CartContext";
 import { products } from "@/data/products";
 
+// ---------------- Types ----------------
 interface Product {
   name: string;
   slug: string;
@@ -14,23 +15,26 @@ interface Product {
   salePrice?: number;
   badge?: string;
   salesCount?: number;
+  variants?: {          // ➜ added variants
+    color: string;
+    size: string;
+    stock: number;
+  }[];
 }
 
 interface Props {
   product: Product;
 }
 
+// ---------------- Component ----------------
 export default function ProductClient({ product }: Props) {
   const { addToCart } = useCart();
-
-  // Default to the main image for the large display
   const [selectedImage, setSelectedImage] = useState<string>(product.image);
 
   return (
     <div className="max-w-6xl mx-auto p-6 md:flex gap-10">
       {/* ---------- Left: Big image & thumbnails ---------- */}
       <div className="md:w-1/2">
-        {/* Big Image */}
         <div className="w-full h-96 relative rounded-lg overflow-hidden shadow-md mb-4">
           <Image
             src={selectedImage}
@@ -40,7 +44,6 @@ export default function ProductClient({ product }: Props) {
           />
         </div>
 
-        {/* Thumbnails: start with main image, then any extra images */}
         <div className="flex gap-3">
           {[product.image, ...(product.images ?? [])].map((img, idx) => (
             <div
@@ -50,7 +53,12 @@ export default function ProductClient({ product }: Props) {
               }`}
               onClick={() => setSelectedImage(img)}
             >
-              <Image src={img} alt={`${product.name} thumb ${idx}`} fill className="object-cover" />
+              <Image
+                src={img}
+                alt={`${product.name} thumb ${idx}`}
+                fill
+                className="object-cover"
+              />
             </div>
           ))}
         </div>
@@ -95,6 +103,20 @@ export default function ProductClient({ product }: Props) {
             </p>
           )}
 
+          {/* ----------- Variants Section ----------- */}
+          {product.variants && product.variants.length > 0 && (
+            <div className="mb-6">
+              <h2 className="font-semibold mb-2">Available Variants</h2>
+              <ul className="list-disc list-inside text-gray-700">
+                {product.variants.map((v, i) => (
+                  <li key={i}>
+                    {v.color} / {v.size} — {v.stock} in stock
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           <div className="flex gap-4 mb-6">
             <button
               onClick={() =>
@@ -113,8 +135,8 @@ export default function ProductClient({ product }: Props) {
         <div className="mt-6 bg-gray-50 p-4 rounded-lg shadow-sm">
           <h2 className="text-xl font-bold mb-2">🧾 Overview</h2>
           <p className="text-gray-700">
-            The large image always starts with the main product photo.
-            Clicking a thumbnail—main or extra—updates the big display.
+            The large image starts with the main product photo.
+            Clicking a thumbnail updates the big display.
           </p>
         </div>
       </div>
