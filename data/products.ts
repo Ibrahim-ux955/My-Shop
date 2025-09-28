@@ -27,7 +27,7 @@ export const products = [
     variants: [
      { color: "Green", size: "M", stock: 12 },
      { color: "Green", size: "L", stock: 8 },
-     { color: "Black", size: "M", stock: 5 },
+     { color: "Black", size: "M", stock: 4 },
    ],
   },
   {

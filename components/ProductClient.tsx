@@ -34,6 +34,7 @@ export default function ProductClient({ product }: Props) {
     ? [product.image, ...product.images]
     : [product.image];
   const [selectedImage, setSelectedImage] = useState(gallery[0]);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
   /* ---------- Variant State ---------- */
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
@@ -101,9 +102,21 @@ export default function ProductClient({ product }: Props) {
     <div className="max-w-6xl mx-auto p-6 md:flex gap-10">
       {/* ---------- Left: Gallery ---------- */}
       <div className="md:w-1/2">
-        <div className="w-full h-96 relative rounded-lg overflow-hidden shadow-md mb-4">
-          <Image src={selectedImage} alt={product.name} fill className="object-cover" />
+        {/* Main Image */}
+        <div
+          className="w-full h-96 relative rounded-lg overflow-hidden shadow-md mb-4 cursor-zoom-in"
+          onClick={() => setIsLightboxOpen(true)}
+        >
+          <Image
+            key={selectedImage} // triggers smooth fade on change
+            src={selectedImage}
+            alt={product.name}
+            fill
+            className="object-cover transition-transform duration-300 ease-in-out transform hover:scale-110"
+          />
         </div>
+
+        {/* Thumbnails */}
         <div className="flex gap-3">
           {gallery.map((img, idx) => (
             <button
@@ -118,6 +131,29 @@ export default function ProductClient({ product }: Props) {
             </button>
           ))}
         </div>
+
+        {/* ---------- Lightbox Modal ---------- */}
+        {isLightboxOpen && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50"
+            onClick={() => setIsLightboxOpen(false)}
+          >
+            <div className="relative w-11/12 max-w-3xl h-4/5">
+              <Image
+                src={selectedImage}
+                alt={product.name}
+                fill
+                className="object-contain"
+              />
+              <button
+                className="absolute top-4 right-4 text-white text-3xl font-bold"
+                onClick={() => setIsLightboxOpen(false)}
+              >
+                &times;
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* ---------- Right: Details ---------- */}
@@ -168,11 +204,22 @@ export default function ProductClient({ product }: Props) {
                       key={c}
                       type="button"
                       onClick={() => setSelectedColor(c)}
-                      className={`px-3 py-1 border rounded ${
-                        selectedColor === c ? "bg-green-500 text-white" : "bg-white"
+                      className={`w-8 h-8 rounded-full border-2 transition-transform transform hover:scale-110 focus:outline-none ${
+                        selectedColor === c ? "border-green-500 ring-2 ring-green-300" : "border-gray-300"
                       }`}
+                      style={{ backgroundColor: c }}
                     >
-                      {c}
+                      {selectedColor === c && (
+                        <svg
+                          className="w-4 h-4 text-white mx-auto my-auto"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                        </svg>
+                      )}
                     </button>
                   ))}
                 </div>
@@ -187,15 +234,19 @@ export default function ProductClient({ product }: Props) {
                       v => v.color === selectedColor && v.size === s
                     );
                     const outOfStock = !variant || variant.stock <= 0;
+                    const lowStock = variant && variant.stock > 0 && variant.stock <= 5;
+
                     return (
                       <button
                         key={s}
                         type="button"
                         onClick={() => setSelectedSize(s)}
                         disabled={outOfStock}
-                        className={`px-3 py-1 border rounded ${
-                          selectedSize === s ? "bg-green-500 text-white" : "bg-white"
-                        } ${outOfStock ? "opacity-50 cursor-not-allowed" : ""}`}
+                        className={`px-3 py-1 border rounded-lg font-medium transition transform hover:scale-105 ${
+                          selectedSize === s ? "bg-green-500 text-white border-green-500" : "bg-white border-gray-300"
+                        } ${outOfStock ? "opacity-50 cursor-not-allowed" : ""} ${
+                          lowStock ? "animate-pulse border-red-500" : ""
+                        }`}
                       >
                         {s}{outOfStock ? " • OOS" : ""}
                       </button>
@@ -207,7 +258,7 @@ export default function ProductClient({ product }: Props) {
               {/* Stock Info */}
               <div className="text-sm text-gray-700 mb-3">
                 {selectedVariant ? (
-                  <span>
+                  <span className={`${selectedVariant.stock <= 5 ? "text-red-600 font-semibold animate-pulse" : ""}`}>
                     Selected: <strong>{selectedVariant.color} / {selectedVariant.size}</strong> — {selectedVariant.stock} in stock
                   </span>
                 ) : (
@@ -217,6 +268,7 @@ export default function ProductClient({ product }: Props) {
             </div>
           )}
 
+          {/* ---------- Action Buttons ---------- */}
           <div className="flex gap-4 mb-6">
             <button
               onClick={handleAddToCart}
