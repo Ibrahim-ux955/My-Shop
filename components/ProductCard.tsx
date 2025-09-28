@@ -1,16 +1,20 @@
 import Image from "next/image";
 import Link from "next/link";
 
-interface ProductProps {
+export interface ProductProps {
+  slug: string;
   name: string;
   price: number;
   salePrice?: number;
   image: string;
-  slug: string;
-  dateAdded: string;
-  salesCount: number;
-  dateBecamePopular?: string;
+  category: string;
+  salesCount?: number;
+  images?: string[];
+  variants?: Variant[];
+  dateAdded?: string;          // ✅ now optional
+  dateBecamePopular?: string;  // ✅ now optional
 }
+
 
 export default function ProductCard({
   name,
