@@ -1,25 +1,19 @@
 export const products = [
- {
-  slug: "green-shirt",
-  name: "Green Shirt",
-  price: 295,
-  salePrice: 250,
-  image: "/images/shirt.jpg",
-  category: "Accessories",
-  salesCount: 10,
-  images: ["/images/shirt.jpg", "/images/shirt-2.jpg"],
-  variants: [
-    { color: "Green", size: "M", stock: 12 },
-    { color: "Green", size: "L", stock: 8 },
-<<<<<<< HEAD
-    { color: "Black", size: "M", stock: 4 },
-=======
-    { color: "Black", size: "M", stock: 5 },
->>>>>>> 5bb365a6c3cbedd4dfbd25eac5b0741dcf5b68b8
-  ],
-},
-
-
+  {
+    slug: "green-shirt",
+    name: "Green Shirt",
+    price: 295,
+    salePrice: 250,
+    image: "/images/shirt.jpg",
+    category: "Accessories",
+    salesCount: 10,
+    images: ["/images/shirt.jpg", "/images/shirt-2.jpg"],
+    variants: [
+      { color: "Green", size: "M", stock: 12 },
+      { color: "Green", size: "L", stock: 8 },
+      { color: "Black", size: "M", stock: 5 },
+    ],
+  },
   {
     slug: "product-b",
     name: "Product B",
@@ -29,10 +23,10 @@ export const products = [
     dateAdded: "2025-09-10",
     salesCount: 5,
     variants: [
-     { color: "Green", size: "M", stock: 12 },
-     { color: "Green", size: "L", stock: 8 },
-     { color: "Black", size: "M", stock: 4 },
-   ],
+      { color: "Green", size: "M", stock: 12 },
+      { color: "Green", size: "L", stock: 8 },
+      { color: "Black", size: "M", stock: 4 },
+    ],
   },
   {
     slug: "sneakers",
