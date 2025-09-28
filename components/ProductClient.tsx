@@ -2,9 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { useCart } from "@/context/CartContext";
-import { products } from "@/data/products";
 
 interface Variant {
   color: string;
@@ -15,23 +13,13 @@ interface Variant {
 interface Product {
   name: string;
   slug: string;
-<<<<<<< HEAD
   image: string;
   images?: string[];
   price: number;
   salePrice?: number;
   badge?: string;
   salesCount?: number;
-  category?: string;
   variants?: Variant[];
-=======
-  image: string;        // main/default image
-  images?: string[];    // 👈 extra gallery images
-  price: number;        // original price
-  salePrice?: number;   // optional discounted price
-  badge?: string;
-  salesCount?: number;
->>>>>>> 5bb365a6c3cbedd4dfbd25eac5b0741dcf5b68b8
 }
 
 interface Props {
@@ -41,7 +29,6 @@ interface Props {
 export default function ProductClient({ product }: Props) {
   const { addToCart } = useCart();
 
-<<<<<<< HEAD
   /* ---------- Gallery ---------- */
   const gallery = product.images && product.images.length > 0
     ? [product.image, ...product.images]
@@ -111,52 +98,28 @@ export default function ProductClient({ product }: Props) {
     }
   };
 
-  /* ---------- Related Products ---------- */
-  const relatedProducts = products
-    .filter(p => p.category === product.category && p.slug !== product.slug)
-    .slice(0, 4);
-
   return (
     <div className="max-w-6xl mx-auto p-6 md:flex gap-10">
       {/* ---------- Left: Gallery ---------- */}
-=======
-  // Use product.images if provided, otherwise fall back to the single main image
-  const gallery = product.images && product.images.length > 0
-    ? product.images
-    : [product.image];
-
-  const [selectedImage, setSelectedImage] = useState<number>(0);
-
-  return (
-    <div className="max-w-6xl mx-auto p-6 md:flex gap-10">
-      {/* ---------- Left: Image Gallery ---------- */}
->>>>>>> 5bb365a6c3cbedd4dfbd25eac5b0741dcf5b68b8
       <div className="md:w-1/2">
+        {/* Main Image */}
         <div
           className="w-full h-96 relative rounded-lg overflow-hidden shadow-md mb-4 cursor-zoom-in"
           onClick={() => setIsLightboxOpen(true)}
         >
           <Image
-<<<<<<< HEAD
-            key={selectedImage}
+            key={selectedImage} // triggers smooth fade on change
             src={selectedImage}
-=======
-            src={gallery[selectedImage]}
->>>>>>> 5bb365a6c3cbedd4dfbd25eac5b0741dcf5b68b8
             alt={product.name}
             fill
             className="object-cover transition-transform duration-300 ease-in-out transform hover:scale-110"
           />
         </div>
 
-        {/* Thumbnails filtered automatically by product.images array */}
+        {/* Thumbnails */}
         <div className="flex gap-3">
           {gallery.map((img, idx) => (
-<<<<<<< HEAD
             <button
-=======
-            <div
->>>>>>> 5bb365a6c3cbedd4dfbd25eac5b0741dcf5b68b8
               key={idx}
               type="button"
               className={`relative w-20 h-20 border rounded-lg overflow-hidden transition-transform hover:scale-105 ${
@@ -169,6 +132,7 @@ export default function ProductClient({ product }: Props) {
           ))}
         </div>
 
+        {/* ---------- Lightbox Modal ---------- */}
         {isLightboxOpen && (
           <div
             className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50"
@@ -192,16 +156,11 @@ export default function ProductClient({ product }: Props) {
         )}
       </div>
 
-<<<<<<< HEAD
       {/* ---------- Right: Details ---------- */}
-=======
-      {/* ---------- Right: Product Info ---------- */}
->>>>>>> 5bb365a6c3cbedd4dfbd25eac5b0741dcf5b68b8
       <div className="md:w-1/2 flex flex-col justify-between">
         <div>
           <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
 
-          {/* Badge (Sale / New etc.) */}
           {product.badge && (
             <span
               className={`inline-block px-3 py-1 text-sm font-semibold text-white rounded-lg mb-4 ${
@@ -212,10 +171,6 @@ export default function ProductClient({ product }: Props) {
             </span>
           )}
 
-<<<<<<< HEAD
-=======
-          {/* Price Section with optional sale price */}
->>>>>>> 5bb365a6c3cbedd4dfbd25eac5b0741dcf5b68b8
           <div className="flex items-center gap-3 my-4">
             {product.salePrice ? (
               <>
@@ -233,7 +188,6 @@ export default function ProductClient({ product }: Props) {
             )}
           </div>
 
-<<<<<<< HEAD
           {typeof product.salesCount === "number" && (
             <p className="text-sm text-gray-600 mb-4">{product.salesCount} sold</p>
           )}
@@ -315,16 +269,6 @@ export default function ProductClient({ product }: Props) {
           )}
 
           {/* ---------- Action Buttons ---------- */}
-=======
-          {/* Sold count */}
-          {typeof product.salesCount === "number" && (
-            <p className="text-sm text-gray-600 mb-4">
-              {product.salesCount} sold
-            </p>
-          )}
-
-          {/* Call-to-action buttons */}
->>>>>>> 5bb365a6c3cbedd4dfbd25eac5b0741dcf5b68b8
           <div className="flex gap-4 mb-6">
             <button
               onClick={handleAddToCart}
@@ -339,34 +283,6 @@ export default function ProductClient({ product }: Props) {
             </button>
           </div>
         </div>
-
-<<<<<<< HEAD
-        {/* ---------- Related Products ---------- */}
-        {relatedProducts.length > 0 && (
-          <div className="mt-8">
-            <h2 className="text-xl font-bold mb-4">Related Products</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {relatedProducts.map(p => (
-                <Link key={p.slug} href={`/products/${p.slug}`}>
-                  <div className="border rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition">
-                    <img src={p.image} alt={p.name} className="w-full h-40 object-cover"/>
-                    <div className="p-2 text-center font-medium">{p.name}</div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
-=======
-        {/* Overview Section */}
-        <div className="mt-6 bg-gray-50 p-4 rounded-lg shadow-sm">
-          <h2 className="text-xl font-bold mb-2">🧾 Overview</h2>
-          <p className="text-gray-700">
-            This detail page automatically shows every image you list for the
-            product, displays sale pricing, and tracks the number of units sold.
-          </p>
-        </div>
->>>>>>> 5bb365a6c3cbedd4dfbd25eac5b0741dcf5b68b8
       </div>
     </div>
   );

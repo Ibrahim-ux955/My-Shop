@@ -11,7 +11,11 @@ export const products = [
   variants: [
     { color: "Green", size: "M", stock: 12 },
     { color: "Green", size: "L", stock: 8 },
+<<<<<<< HEAD
     { color: "Black", size: "M", stock: 4 },
+=======
+    { color: "Black", size: "M", stock: 5 },
+>>>>>>> 5bb365a6c3cbedd4dfbd25eac5b0741dcf5b68b8
   ],
 },
 
