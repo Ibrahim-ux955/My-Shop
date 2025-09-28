@@ -9,7 +9,7 @@ interface Product {
   price: number;
   image: string;
   slug: string;
-  badge?: "Sale" | "New";
+  badge?: string,
 }
 
 /** Cart item = product + quantity + optional variant */
